@@ -8,11 +8,22 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class MainLocationAdapter(val locationList: ArrayList<HashMap<String, String>>): RecyclerView.Adapter<MainLocationAdapter.ViewHolder>() {
-
+    private lateinit var itemClickListenerr : OnItemClickListener
     override fun onBindViewHolder(holder: MainLocationAdapter.ViewHolder, position: Int) {
         val location = locationList[position]
         holder.locationName?.text = location.get("name")
         holder.locationAddress?.text = location.get("address")
+
+        holder.locationAddress.setOnClickListener {
+            itemClickListenerr.onClick(it, position)
+        }
+    }
+    interface OnItemClickListener {
+        fun onClick(v: View, position: Int)
+    }
+    // (3) 외부에서 클릭 시 이벤트 설정
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListenerr = onItemClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainLocationAdapter.ViewHolder {
@@ -24,9 +35,16 @@ class MainLocationAdapter(val locationList: ArrayList<HashMap<String, String>>):
         return locationList.size
     }
 
+
+
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val locationName = itemView.findViewById<TextView>(R.id.locationName)
         val locationAddress = itemView.findViewById<TextView>(R.id.locationAddress)
+
+
+        fun bind() {
+
+        }
     }
 
 }
